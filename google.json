@@ -1,0 +1,26 @@
+{
+  "variables": {
+    "project_id": "project-name",
+    "image_id": "debian-9",
+    "image_name": "test",
+    "image_zone": "asia-northeast1-b",
+    "user": "packer"
+  },
+  "builders":[
+    {
+      "type": "googlecompute",
+      "project_id": "{{user `project_id`}}",
+      "source_image_family": "{{user `image_id`}}",
+      "ssh_username": "{{user `user`}}",
+      "zone": "{{ user `image_zone` }}",
+      "image_name": "{{user `image_name`}}"
+    }
+  ],
+  "provisioners": [
+    {
+      "type": "ansible",
+      "playbook_file": "site.yml",
+      "user": "{{user `user`}}"
+    }
+  ]
+}
