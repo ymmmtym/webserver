@@ -1,0 +1,6 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: path
+data:
+  NGINX_HTML_PATH: html
