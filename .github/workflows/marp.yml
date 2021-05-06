@@ -13,7 +13,7 @@ jobs:
       - run: docker run --rm -v "$(pwd):/home/marp/app/" 
              -e LANG=$LANG marpteam/marp-cli ${{steps.config.outputs.DIR}}/index.md 
              --${{steps.config.outputs.FORMAT}} 
-             -o ${{steps.config.outputs.DIR}}.${{steps.config.outputs.FORMAT}}
+             -o ${{steps.config.outputs.DIR}}/index.${{steps.config.outputs.FORMAT}}
 
       - uses: actions/upload-artifact@v2
         with:
