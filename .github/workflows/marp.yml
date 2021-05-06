@@ -3,8 +3,6 @@ on: [push]
 jobs:
   marp:
     runs-on: ubuntu-latest
-    container: 
-      image: marpteam/marp-cli
     steps:
       - uses: actions/checkout@v2
       - run: sudo apt-get update & sudo apt-get install jq
@@ -12,18 +10,14 @@ jobs:
         run: |
           echo "::set-output name=DIR::$(jq -r .directory config.json)"
           echo "::set-output name=FORMAT::$(jq -r .output_format config.json)"
-      - run: chmod -R 0775 ${{steps.config.outputs.DIR}}
-      - run: marp-cli ${{steps.config.outputs.DIR}}/index.md 
+      - run: sudo chmod -R 0775 ${{steps.config.outputs.DIR}}
+      - run: docker run --rm -u root --init -v "$(pwd):/home/marp/app/" 
+             -e LANG="ja_JP.UTF-8" marpteam/marp-cli ${{steps.config.outputs.DIR}}/index.md 
              --${{steps.config.outputs.FORMAT}} 
-             -o ${{steps.config.outputs.DIR}}.${{steps.config.outputs.FORMAT}} 
+             -o ${{steps.config.outputs.DIR}}/index.${{steps.config.outputs.FORMAT}} 
              --allow-local-files
-      # - run: docker run --rm -u ${USER} --init -v "$(pwd):/home/marp/app/" 
-      #        -e LANG="ja_JP.UTF-8" marpteam/marp-cli ${{steps.config.outputs.DIR}}/index.md 
-      #        --${{steps.config.outputs.FORMAT}} 
-      #        -o ${{steps.config.outputs.DIR}}.${{steps.config.outputs.FORMAT}} 
-      #        --allow-local-files
 
       - uses: actions/upload-artifact@v2
         with:
           name: output_doc
-          path: ${{steps.config.outputs.DIR}}.${{steps.config.outputs.FORMAT}}
+          path: ${{steps.config.outputs.DIR}}/index.${{steps.config.outputs.FORMAT}}
