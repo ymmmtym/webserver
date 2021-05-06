@@ -10,7 +10,7 @@ jobs:
         run: |
           echo "::set-output name=DIR::$(jq -r .directory config.json)"
           echo "::set-output name=FORMAT::$(jq -r .output_format config.json)"
-      - run: cd ${{steps.config.outputs.DIR}} & docker run --rm -u root --init -v "$(pwd):/home/marp/app/" 
+      - run: docker run --rm -u root --init -v "$(pwd)/${{steps.config.outputs.DIR}}:/home/marp/app/" 
              -e LANG="ja_JP.UTF-8" marpteam/marp-cli index.md 
              --${{steps.config.outputs.FORMAT}} 
              -o index.${{steps.config.outputs.FORMAT}} 
