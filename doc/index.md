@@ -3,6 +3,11 @@ marp: true
 theme: gaia
 header: "**WebServer基礎**"
 footer: ""
+style: |
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP&display=swap');
+  section {
+    font-family: 'Noto Sans JP', serif;
+  }
 ---
 
 # Webサーバ基礎
@@ -19,7 +24,7 @@ footer: ""
 
 ### クライアントサーバモデル
 
-![Web Server](img/webserver.dio.svg)  
+![Web Server](./img/webserver.dio.svg)
 Webサイトを閲覧するときは、Webブラウザを使用します。
 ブラウザを通じてWebクライアントとなり、Webサーバにアクセスしています。
 これをクライアントサーバモデルと呼び、私たちは知らない間にこれに基づいてWebサイトを閲覧しています。
