@@ -6,17 +6,14 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - run: sudo apt-get update & sudo apt-get install jq
-      - run: |
-          directory=$(cat config.json | jq -r .directory)
-          output_format=$(cat config.json | jq -r .output_format)
-          echo "::set-output name=DIR::${directory}"
-          echo "::set-output name=FORMAT::${output_format}"
-        id: config
-      - run: docker run --rm -u root --init -v "$(pwd):/home/marp/app/" 
+      - id: config
+        run: |
+          echo "::set-output name=DIR::$(jq -r .directory config.json)"
+          echo "::set-output name=FORMAT::$(jq -r .output_format config.json)"
+      - run: docker run --rm -v "$(pwd):/home/marp/app/" 
              -e LANG=$LANG marpteam/marp-cli ${{steps.config.outputs.DIR}}/index.md 
              --${{steps.config.outputs.FORMAT}} 
              -o ${{steps.config.outputs.DIR}}.${{steps.config.outputs.FORMAT}}
-             --allow-local-files
 
       - uses: actions/upload-artifact@v2
         with:
