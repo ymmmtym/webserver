@@ -1,4 +1,5 @@
 {
     "directory": "doc",
-    "output_format": "pdf"
+    "output_format": "pdf",
+    "lang": "ja_JP.UTF-8"
 }

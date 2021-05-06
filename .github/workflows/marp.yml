@@ -12,13 +12,14 @@ jobs:
         run: |
           echo "::set-output name=DIR::$(jq -r .directory config.json)"
           echo "::set-output name=FORMAT::$(jq -r .output_format config.json)"
+          echo "::set-output name=LANG::$(jq -r .lang config.json)"
       - name: create slide
-        run: npx @marp-team/marp-cli ${{steps.config.outputs.DIR}}/index.md 
+        run: LANG=${LANG} npx @marp-team/marp-cli ${{steps.config.outputs.DIR}}/index.md 
              --${{steps.config.outputs.FORMAT}} 
              -o ${{steps.config.outputs.DIR}}.${{steps.config.outputs.FORMAT}} 
              --allow-local-files
 
       - uses: actions/upload-artifact@v2
         with:
-          name: output_doc
+          name: artifact
           path: ${{steps.config.outputs.DIR}}.${{steps.config.outputs.FORMAT}}
