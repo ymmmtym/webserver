@@ -3,11 +3,6 @@ marp: true
 theme: gaia
 header: "**WebServer基礎**"
 footer: ""
-style: |
-  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP&display=swap');
-  section {
-    font-family: 'Noto Sans JP', serif;
-  }
 ---
 
 # Webサーバ基礎
