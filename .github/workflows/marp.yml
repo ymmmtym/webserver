@@ -11,12 +11,13 @@ jobs:
           sudo add-apt-repository -y -n ppa:sicklylife/ppa
           sudo apt-get update
           sudo apt install qpdfview jq
-      - id: config
+      - name: Setup config
+        id: config
         run: |
           echo "::set-output name=DIR::$(jq -r .directory config.json)"
           echo "::set-output name=FORMAT::$(jq -r .output_format config.json)"
           export LANG=$(jq -r .lang config.json)
-      - name: create slide
+      - name: Create slide
         run: npx @marp-team/marp-cli ${{steps.config.outputs.DIR}}/*.md 
              --${{steps.config.outputs.FORMAT}} 
              --allow-local-files
