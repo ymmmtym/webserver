@@ -5,21 +5,23 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: setup Node
-        uses: actions/setup-node@v1
-      - run: sudo apt-get update & sudo apt-get install jq
-      - id: config
+      - uses: actions/setup-node@v1
+      - name: Install Dependency
+        run: |
+          sudo add-apt-repository -y -n ppa:sicklylife/ppa
+          sudo apt-get update
+          sudo apt install qpdfview jq
+      - name: Setup config
+        id: config
         run: |
           echo "::set-output name=DIR::$(jq -r .directory config.json)"
           echo "::set-output name=FORMAT::$(jq -r .output_format config.json)"
-          echo "::set-output name=LANG::$(jq -r .lang config.json)"
-      - name: create slide
-        run: LANG=${LANG} npx @marp-team/marp-cli ${{steps.config.outputs.DIR}}/index.md 
+          export LANG=$(jq -r .lang config.json)
+      - name: Create slide
+        run: npx @marp-team/marp-cli ${{steps.config.outputs.DIR}}/*.md 
              --${{steps.config.outputs.FORMAT}} 
-             -o ${{steps.config.outputs.DIR}}.${{steps.config.outputs.FORMAT}} 
              --allow-local-files
-
       - uses: actions/upload-artifact@v2
         with:
-          name: artifact
-          path: ${{steps.config.outputs.DIR}}.${{steps.config.outputs.FORMAT}}
+          name: artifacts
+          path: ${{steps.config.outputs.DIR}}/*.${{steps.config.outputs.FORMAT}} 
