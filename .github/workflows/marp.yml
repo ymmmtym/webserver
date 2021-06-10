@@ -1,0 +1,27 @@
+name: marp
+on: [push]
+jobs:
+  marp:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+      - name: Install Dependency
+        run: |
+          sudo add-apt-repository -y -n ppa:sicklylife/ppa
+          sudo apt-get update
+          sudo apt install qpdfview jq
+      - name: Setup config
+        id: config
+        run: |
+          echo "::set-output name=DIR::$(jq -r .directory config.json)"
+          echo "::set-output name=FORMAT::$(jq -r .output_format config.json)"
+          export LANG=$(jq -r .lang config.json)
+      - name: Create slide
+        run: npx @marp-team/marp-cli ${{steps.config.outputs.DIR}}/*.md 
+             --${{steps.config.outputs.FORMAT}} 
+             --allow-local-files
+      - uses: actions/upload-artifact@v2
+        with:
+          name: artifacts
+          path: ${{steps.config.outputs.DIR}}/*.${{steps.config.outputs.FORMAT}} 

@@ -19,7 +19,7 @@ footer: ""
 
 ### クライアントサーバモデル
 
-![Web Server](img/webserver.dio.svg)  
+![Web Server](./img/webserver.dio.svg)
 Webサイトを閲覧するときは、Webブラウザを使用します。
 ブラウザを通じてWebクライアントとなり、Webサーバにアクセスしています。
 これをクライアントサーバモデルと呼び、私たちは知らない間にこれに基づいてWebサイトを閲覧しています。
